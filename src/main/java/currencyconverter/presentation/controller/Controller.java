@@ -18,6 +18,7 @@ public class Controller {
     @Autowired
     private CCService ccService;
     private ConversionDTO conversion;
+    private RequestCounter req;
 
     @GetMapping("/")
     public String mainPage(Model model) {
@@ -36,9 +37,13 @@ public class Controller {
             return null;
         }
 
-        this.conversion = this.ccService.getConvertedValue(conversionDetails.getFrom(), conversionDetails.getConvto());
-        this.conversion.calculateConvertedValue(conversionDetails.getAmount(), conversionDetails.getConvto());
-        System.out.println(conversionDetails.getAmount() + " " + conversionDetails.getFrom() + " " + conversionDetails.getConvto());
+        String fromCurrency = conversionDetails.getFrom();
+        String toCurrency = conversionDetails.getConvto();
+
+        this.ccService.addNewRequest(fromCurrency, toCurrency);
+        this.conversion = this.ccService.getConvertedValue(fromCurrency);
+        this.conversion.calculateConvertedValue(conversionDetails.getAmount(), toCurrency);
+
         model.addAttribute("conversionDetails", conversionDetails);
         model.addAttribute("conversionComplete", conversion);
 
@@ -46,7 +51,10 @@ public class Controller {
     }
 
     @GetMapping("/admin")
-    public String adminPage() {
+    public String adminPage(Model model) {
+        long count = ccService.countNumberOfRequests();
+        req = new RequestCounter(count);
+        model.addAttribute("counter", req);
         return "admin";
     }
 }

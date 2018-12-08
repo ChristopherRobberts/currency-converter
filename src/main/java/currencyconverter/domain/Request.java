@@ -17,6 +17,9 @@ public class Request implements RequestDTO {
     @Column(name = "toCurrency")
     private String to;
 
+    @Transient
+    private long count;
+
     public Request(String from, String to) {
         this.from = from;
         this.to = to;
@@ -41,4 +44,8 @@ public class Request implements RequestDTO {
     public void setTo(String to) {
         this.to = to;
     }
+
+    public long getCount() { return this.count; }
+
+    public void setCount(long count) { this.count = count; }
 }

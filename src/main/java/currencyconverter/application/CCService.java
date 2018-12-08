@@ -3,7 +3,6 @@ package currencyconverter.application;
 import currencyconverter.domain.Conversion;
 import currencyconverter.domain.ConversionDTO;
 import currencyconverter.domain.Request;
-import currencyconverter.domain.RequestDTO;
 import currencyconverter.repository.ConversionRateRepository;
 import currencyconverter.repository.ConversionRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,5 +29,13 @@ public class CCService {
 
     public long countNumberOfRequests() {
         return conversionRequestRepository.count();
+    }
+
+    public ConversionDTO updateConversion(String from, String to, double newValue) {
+        System.out.println(from + " " + to + " " + newValue);
+        Conversion conv = conversionRateRepository.findByToConvert(from);
+        conv.updateValue(to, newValue);
+        conversionRateRepository.save(conv);
+        return conv;
     }
 }

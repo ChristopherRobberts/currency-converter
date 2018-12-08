@@ -18,7 +18,6 @@ public class Controller {
     @Autowired
     private CCService ccService;
     private ConversionDTO conversion;
-    private RequestCounter req;
 
     @GetMapping("/")
     public String mainPage(Model model) {
@@ -31,20 +30,20 @@ public class Controller {
     }
 
     @PostMapping("/conversionRequest")
-    public String makeConversion(@ModelAttribute ConversionForm conversionDetails, BindingResult bindingResult, Model model) {
+    public String makeConversion(@ModelAttribute ConversionForm conversionForm, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("conversionDetails", new ConversionForm());
             return null;
         }
 
-        String fromCurrency = conversionDetails.getFrom();
-        String toCurrency = conversionDetails.getConvto();
+        String fromCurrency = conversionForm.getFrom();
+        String toCurrency = conversionForm.getConvto();
 
         this.ccService.addNewRequest(fromCurrency, toCurrency);
         this.conversion = this.ccService.getConvertedValue(fromCurrency);
-        this.conversion.calculateConvertedValue(conversionDetails.getAmount(), toCurrency);
+        this.conversion.calculateConvertedValue(conversionForm.getAmount(), toCurrency);
 
-        model.addAttribute("conversionDetails", conversionDetails);
+        model.addAttribute("conversionDetails", conversionForm);
         model.addAttribute("conversionComplete", conversion);
 
         return "homepage";
@@ -53,8 +52,26 @@ public class Controller {
     @GetMapping("/admin")
     public String adminPage(Model model) {
         long count = ccService.countNumberOfRequests();
-        req = new RequestCounter(count);
-        model.addAttribute("counter", req);
+        model.addAttribute("counter", new RequestCounterDTO(count));
+        model.addAttribute("update", new AdminUpdateForm());
+        model.addAttribute("updated", conversion);
+        return "admin";
+    }
+
+    @PostMapping("/updateRequest")
+    public String makeUpdate(@ModelAttribute AdminUpdateForm adminUpdateForm, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            System.out.println("err");
+        }
+
+        long count = ccService.countNumberOfRequests();
+        this.conversion = ccService.updateConversion(adminUpdateForm.getFrom(),
+                adminUpdateForm.getConvto(), adminUpdateForm.getNewval());
+
+        model.addAttribute("counter", new RequestCounterDTO(count));
+        model.addAttribute("update", adminUpdateForm);
+        model.addAttribute("updated", conversion);
+
         return "admin";
     }
 }

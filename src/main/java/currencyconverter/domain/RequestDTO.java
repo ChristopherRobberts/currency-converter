@@ -8,4 +8,5 @@ public interface RequestDTO {
 
     String getTo();
 
+    void setCount(long count);
 }

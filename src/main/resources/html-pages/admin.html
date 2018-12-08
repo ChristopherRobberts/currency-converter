@@ -8,9 +8,42 @@
     <body>
         <main layout:fragment="mainsection">
             <p>admin page</p>
-            <p>
-                count: <span th:text="${counter.count}"></span>
+            <p th:object="${counter}">
+                number of made conversion requests: <span th:text="${counter.count}"></span>
             </p>
+            <form th:action="@{/updateRequest}" th:object="${update}" method="post">
+                <section>
+                    <h2>Change a conversion rate by choosing the two currencies to alter from the drop downs</h2>
+                    <label for="from">from:</label>
+                    <select id="from" onChange="update(this, 'fromCurrency')">
+                        <option value=""></option>
+                        <option value="SEK">SEK</option>
+                        <option value="euro">euro</option>
+                        <option value="pound">pound</option>
+                        <option value="dollar">dollar</option>
+                    </select>
+                    <label for="to">to:</label>
+                    <select id="to" onChange="update(this, 'toCurrency')">
+                        <option value=""></option>
+                        <option value="SEK">SEK</option>
+                        <option value="euro">euro</option>
+                        <option value="pound">pound</option>
+                        <option value="dollar">dollar</option>
+                    </select>
+                </section>
+                <section>
+                    <input th:field="*{from}" type="hidden" value="" id="fromCurrency"/>
+                    <input th:field="*{convto}" type="hidden" value="" id="toCurrency"/>
+                    <label for="diff" id="convertFrom">New value</label>
+                    <input th:field="*{newval}" id="diff" type="text" name="amount"/>
+                    <input id="submit" type="submit" name="Submit"/>
+                </section>
+            </form>
+            <script>
+                function update(event, to) {
+                    document.getElementById(to).value = event.selectedOptions[0].text;
+                }
+            </script>
         </main>
     </body>
 </html>

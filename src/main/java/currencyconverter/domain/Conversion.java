@@ -91,4 +91,24 @@ public class Conversion implements ConversionDTO {
     public void setConval(double val) {
         this.conval = val;
     }
+
+    public void updateValue(String to, double newValue) {
+        switch (to) {
+            case "dollar":
+                this.dollar = newValue;
+                break;
+            case "euro":
+                this.euro = newValue;
+                break;
+            case "SEK":
+                this.SEK = newValue;
+                break;
+            case "pound":
+                this.pound = newValue;
+                break;
+            default:
+                System.out.println("something went wrong chris!");
+                break;
+        }
+    }
 }

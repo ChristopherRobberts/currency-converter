@@ -1,17 +1,17 @@
 package currencyconverter.presentation.controller;
 
-public class RequestCounter {
+public class RequestCounterDTO {
     private long count;
 
-    public RequestCounter(long count) {
+    public RequestCounterDTO(long count) {
+        this.count = count;
+    }
+
+    public void setCount(long count) {
         this.count = count;
     }
 
     public long getCount() {
         return this.count;
-    }
-
-    public void setCount(long count) {
-        this.count = count;
     }
 }

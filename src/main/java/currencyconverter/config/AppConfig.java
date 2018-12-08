@@ -1,17 +1,22 @@
 package currencyconverter.config;
 
 import nz.net.ultraq.thymeleaf.LayoutDialect;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.resource.PathResourceResolver;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
+import org.h2.server.web.WebServlet;
+
 
 @EnableTransactionManagement
 @EnableWebMvc
@@ -51,4 +56,19 @@ public class AppConfig implements ApplicationContextAware, WebMvcConfigurer {
         springResourceTemplateResolver.setCacheable(true);
         return springResourceTemplateResolver;
     }
+
+    public void addResourceHandlers(ResourceHandlerRegistry reg) {
+        String dirForCSS = "classpath:/html-pages/";
+
+        reg.addResourceHandler("/**").addResourceLocations(dirForCSS).setCachePeriod(1)
+                .resourceChain(true).addResolver(new PathResourceResolver());
+    }
+
+    @Bean
+    ServletRegistrationBean h2servletRegistration(){
+        ServletRegistrationBean registrationBean = new ServletRegistrationBean( new WebServlet());
+        registrationBean.addUrlMappings("/console/*");
+        return registrationBean;
+    }
+
 }

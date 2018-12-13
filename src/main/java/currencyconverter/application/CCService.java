@@ -7,11 +7,11 @@ import currencyconverter.repository.ConversionRateRepository;
 import currencyconverter.repository.ConversionRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(rollbackOn = Exception.class)
+@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
 public class CCService {
 
     @Autowired

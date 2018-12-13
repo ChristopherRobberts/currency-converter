@@ -63,7 +63,7 @@ public class Controller {
 
     @PostMapping("/updateRequest")
     public String makeUpdate(@ModelAttribute @Valid AdminUpdateForm adminUpdateForm, BindingResult bindingResult, Model model) {
-        
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("update", adminUpdateForm);
             return "admin";

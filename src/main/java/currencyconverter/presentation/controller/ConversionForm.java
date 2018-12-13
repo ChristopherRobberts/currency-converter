@@ -1,10 +1,22 @@
 package currencyconverter.presentation.controller;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
 public class ConversionForm {
 
-    private String from;
-    private String convto;
+    @NotNull
     private double amount;
+
+    @NotEmpty
+    @NotBlank
+    private String from;
+
+    @NotEmpty
+    @NotBlank
+    private String convto;
 
     public double getAmount() {
         return this.amount;

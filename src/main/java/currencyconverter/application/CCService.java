@@ -32,10 +32,14 @@ public class CCService {
     }
 
     public ConversionDTO updateConversion(String from, String to, double newValue) {
-        System.out.println(from + " " + to + " " + newValue);
-        Conversion conv = conversionRateRepository.findByToConvert(from);
-        conv.updateValue(to, newValue);
-        conversionRateRepository.save(conv);
-        return conv;
+        Conversion conversionFrom = conversionRateRepository.findByToConvert(from);
+        Conversion conversionTo = conversionRateRepository.findByToConvert(to);
+        conversionFrom.updateValue(to, newValue);
+        double currentValue = conversionTo.getReferredValue(from);
+
+        conversionTo.updateValue(from, currentValue/newValue);
+        conversionRateRepository.save(conversionFrom);
+        conversionRateRepository.save(conversionTo);
+        return conversionFrom;
     }
 }

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.validation.Valid;
+
 
 @org.springframework.stereotype.Controller
 @Scope("session")
@@ -30,22 +32,23 @@ public class Controller {
     }
 
     @PostMapping("/conversionRequest")
-    public String makeConversion(@ModelAttribute ConversionForm conversionForm, BindingResult bindingResult, Model model) {
+    public String makeConversion(@ModelAttribute @Valid ConversionForm conversionForm, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("conversionDetails", new ConversionForm());
-            return null;
+            System.out.println("should enter here and return");
+            model.addAttribute("conversionDetails", conversionForm);
+            return "homepage";
         }
 
         String fromCurrency = conversionForm.getFrom();
         String toCurrency = conversionForm.getConvto();
 
         this.ccService.addNewRequest(fromCurrency, toCurrency);
+        System.out.println(toCurrency);
         this.conversion = this.ccService.getConvertedValue(fromCurrency);
         this.conversion.calculateConvertedValue(conversionForm.getAmount(), toCurrency);
 
         model.addAttribute("conversionDetails", conversionForm);
         model.addAttribute("conversionComplete", conversion);
-
         return "homepage";
     }
 
@@ -59,9 +62,11 @@ public class Controller {
     }
 
     @PostMapping("/updateRequest")
-    public String makeUpdate(@ModelAttribute AdminUpdateForm adminUpdateForm, BindingResult bindingResult, Model model) {
+    public String makeUpdate(@ModelAttribute @Valid AdminUpdateForm adminUpdateForm, BindingResult bindingResult, Model model) {
+        
         if (bindingResult.hasErrors()) {
-            System.out.println("err");
+            model.addAttribute("update", adminUpdateForm);
+            return "admin";
         }
 
         long count = ccService.countNumberOfRequests();

@@ -1,9 +1,18 @@
 package currencyconverter.presentation.controller;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 public class AdminUpdateForm {
 
+    @NotBlank(message = "you must select from")
+    @NotNull
     private String from;
+    @NotNull
+    @NotBlank(message = "you must select to")
     private String convto;
+
+    @NotNull
     private double newval;
 
     public String getFrom() {

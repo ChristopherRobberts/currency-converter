@@ -12,7 +12,7 @@
                 <section>
                     <label for="from"></label>
                     <select id="from" onChange="updateFrom(this)">
-                        <option value=""></option>
+                        <option value="0"></option>
                         <option value="SEK">SEK</option>
                         <option value="euro">euro</option>
                         <option value="pound">pound</option>
@@ -20,18 +20,29 @@
                     </select>
                     <label for="to"></label>
                     <select id="to" onChange="updateTo(this)">
-                        <option value=""></option>
+                        <option value="0"></option>
                         <option value="SEK">SEK</option>
                         <option value="euro">euro</option>
                         <option value="pound">pound</option>
                         <option value="dollar">dollar</option>
                     </select>
 
-                    <input th:field="*{from}" type="hidden" value="" id="fromCurrency"/>
-                    <input th:field="*{convto}" type="hidden" value="" id="toCurrency"/>
+                    <input th:field="*{from}" type="hidden" id="fromCurrency"/>
+                    <input th:field="*{convto}" type="hidden" id="toCurrency"/>
                     <label for="amount" id="convertFrom"></label>
                     <input th:field="*{amount}" id="amount" type="text" name="amount"/>
                     <input type="submit" value="Submit">
+                    <span th:if="${#fields.hasErrors('from')}" th:errors="*{from}">
+                        not a valid "from" currency
+                    </span>
+                    <span th:if="${#fields.hasErrors('convto')}" th:errors="*{convto}">
+                        not a valid "to" currency
+                    </span>
+                    <span th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}">
+                        not a valid value
+                    </span>
+
+
                 </section>
                 <section>
                     <p th:object="${conversionComplete}">

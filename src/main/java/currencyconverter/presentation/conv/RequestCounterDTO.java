@@ -1,4 +1,4 @@
-package currencyconverter.presentation.controller;
+package currencyconverter.presentation.conv;
 
 public class RequestCounterDTO {
     private long count;

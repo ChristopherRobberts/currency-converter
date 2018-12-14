@@ -1,9 +1,8 @@
-package currencyconverter.presentation.controller;
+package currencyconverter.presentation.conv;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 public class ConversionForm {
 

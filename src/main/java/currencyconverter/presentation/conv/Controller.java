@@ -1,4 +1,4 @@
-package currencyconverter.presentation.controller;
+package currencyconverter.presentation.conv;
 
 import currencyconverter.application.CCService;
 import currencyconverter.domain.ConversionDTO;
